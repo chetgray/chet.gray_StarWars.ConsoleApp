@@ -1,2 +1,23 @@
 StarWars.ConsoleApp
 ===================
+
+User Story 211922: Calling APIs: Call Star Wars API
+---------------------------------------------------
+
+> Let's call our Star Wars API!
+>
+> - [ ] Write a console application that calls the Star Wars WebAPI you
+>   created earlier and set up in IIS
+> - [ ] It should present the user a menu of options.
+> - [ ] They can:
+>   - [ ] Get a list of all the character information
+>   - [ ] Get a character's information by their name
+>   - [ ] Get a list of character information by allegiance
+>   - [ ] Get a list of character information by trilogy
+> - [ ] Once the user select an option from the menu, prompt them for
+>   any additional information needed.
+> - [ ] Then call your Star Wars WebAPI and display the appropriate
+>   returned data on the Console.
+> - [ ] After it's done, it should ask the user if they want to do it
+>   again.
+> - [ ] If they answer Yes, it should present the Main Menu again.
