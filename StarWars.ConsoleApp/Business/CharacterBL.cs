@@ -80,7 +80,24 @@ namespace StarWars.ConsoleApp.Business
         /// <inheritdoc/>
         public async Task<CharacterModel> GetOneByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            Uri uri = new Uri(BaseUri, $"Characters/ByName/{name}");
+            string json;
+            using (HttpResponseMessage response = await _apiClient.GetAsync(uri))
+            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException(
+                        "Response status code does not indicate success: "
+                            + $"{(int)response.StatusCode} ({response.ReasonPhrase})."
+                    );
+                }
+                json = await response.Content.ReadAsStringAsync();
+            }
+            CharacterModel character = JsonConvert.DeserializeObject<CharacterModel>(
+                json,
+                SerializerSettings
+            );
+            return character;
         }
     }
 }

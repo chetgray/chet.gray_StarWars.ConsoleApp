@@ -62,6 +62,7 @@ namespace StarWars.ConsoleApp
 
                     case "2":
                         // Get a character's information by their name
+                        LookupCharacterByName(_characterBL);
                         break;
 
                     case "3":
@@ -149,6 +150,25 @@ namespace StarWars.ConsoleApp
                 return;
             }
             WriteCharacterTable(characters);
+        }
+
+        private static void LookupCharacterByName(ICharacterBL characterBL)
+        {
+            Write("Enter a character name to look up:\n» ");
+            string name = ReadLine();
+            WriteLine();
+
+            CharacterModel character;
+            try
+            {
+                character = characterBL.GetOneByNameAsync(name).Result;
+            }
+            catch (AggregateException ex)
+            {
+                ex.Flatten().Handle(HandleApiExceptions);
+                return;
+            }
+            WriteCharacterTable(new List<CharacterModel> { character });
         }
 
         private static void WriteCharacterTable(IEnumerable<CharacterModel> characters)
