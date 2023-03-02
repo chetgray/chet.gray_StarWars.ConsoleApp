@@ -31,47 +31,7 @@ namespace StarWars.ConsoleApp
                 ex.Flatten().Handle(HandleApiExceptions);
                 return;
             }
-            // Find longest Id and Name from characters
-            int idWidth = characters.Max(c => c.Id.ToString().Length);
-            int nameWidth = characters.Max(c => c.Name.Length);
-            const int jediWidth = 5;
-            const int allegianceWidth = 10;
-            const int trilogyWidth = 8;
-            // Write table header
-            WriteLine(
-                string.Join(
-                    " | ",
-                    "Id".PadRight(idWidth),
-                    "Name".PadRight(nameWidth),
-                    "Jedi?".PadRight(jediWidth),
-                    "Allegiance".PadRight(allegianceWidth),
-                    "Trilogy".PadRight(trilogyWidth)
-                )
-            );
-            WriteLine(
-                string.Join(
-                    " | ",
-                    new string('-', idWidth),
-                    new string('-', nameWidth),
-                    new string('-', jediWidth),
-                    new string('-', allegianceWidth),
-                    new string('-', trilogyWidth)
-                )
-            );
-            // Write table body
-            foreach (CharacterModel character in characters)
-            {
-                WriteLine(
-                    string.Join(
-                        " | ",
-                        character.Id.ToString().PadRight(idWidth),
-                        character.Name.PadRight(nameWidth),
-                        $"{(character.IsJedi ? "Jedi" : "")}".PadRight(jediWidth),
-                        character.Allegiance.ToString().PadRight(allegianceWidth),
-                        character.TrilogyIntroducedIn.ToString().PadRight(trilogyWidth)
-                    )
-                );
-            }
+            WriteCharacterTable(characters);
         }
 
         /// <summary>
@@ -189,6 +149,51 @@ namespace StarWars.ConsoleApp
 
             WriteLine("Press any key to exit . . . ");
             ReadKey(intercept: true);
+        }
+
+        private static void WriteCharacterTable(IEnumerable<CharacterModel> characters)
+        {
+            // Find longest Id and Name from characters
+            int idWidth = characters.Max(c => c.Id.ToString().Length);
+            int nameWidth = characters.Max(c => c.Name.Length);
+            const int jediWidth = 5;
+            const int allegianceWidth = 10;
+            const int trilogyWidth = 8;
+            // Write table header
+            WriteLine(
+                string.Join(
+                    " | ",
+                    "Id".PadRight(idWidth),
+                    "Name".PadRight(nameWidth),
+                    "Jedi?".PadRight(jediWidth),
+                    "Allegiance".PadRight(allegianceWidth),
+                    "Trilogy".PadRight(trilogyWidth)
+                )
+            );
+            WriteLine(
+                string.Join(
+                    " | ",
+                    new string('-', idWidth),
+                    new string('-', nameWidth),
+                    new string('-', jediWidth),
+                    new string('-', allegianceWidth),
+                    new string('-', trilogyWidth)
+                )
+            );
+            // Write table body
+            foreach (CharacterModel character in characters)
+            {
+                WriteLine(
+                    string.Join(
+                        " | ",
+                        character.Id.ToString().PadRight(idWidth),
+                        character.Name.PadRight(nameWidth),
+                        $"{(character.IsJedi ? "Jedi" : "")}".PadRight(jediWidth),
+                        character.Allegiance.ToString().PadRight(allegianceWidth),
+                        character.TrilogyIntroducedIn.ToString().PadRight(trilogyWidth)
+                    )
+                );
+            }
         }
     }
 }
