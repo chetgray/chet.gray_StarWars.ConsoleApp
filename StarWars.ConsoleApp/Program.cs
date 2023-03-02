@@ -136,8 +136,12 @@ namespace StarWars.ConsoleApp
         }
 
         /// <summary>
-        /// Gets all characters from the API and writes them to the console.
+        /// Queries the API for all <see cref="CharacterModel">character</see>s and writes the
+        /// information to the console.
         /// </summary>
+        /// <param name="characterBL">
+        /// The <see cref="ICharacterBL">business logic</see> to use.
+        /// </param>
         private static void LookupAllCharacters(ICharacterBL characterBL)
         {
             List<CharacterModel> characters;
@@ -153,6 +157,14 @@ namespace StarWars.ConsoleApp
             WriteCharacterTable(characters);
         }
 
+        /// <summary>
+        /// Prompts the user for a name, then queries the API for a <see
+        /// cref="CharacterModel">character</see> with that <see
+        /// cref"CharacterModel.Name">name</see> and writes the information to the console.
+        /// </summary>
+        /// <param name="characterBL">
+        /// The <see cref="ICharacterBL">business logic</see> to use.
+        /// </param>
         private static void LookupCharacterByName(ICharacterBL characterBL)
         {
             string nameInput = null;
@@ -181,6 +193,14 @@ namespace StarWars.ConsoleApp
             WriteCharacterTable(new List<CharacterModel> { character });
         }
 
+        /// <summary>
+        /// Writes a table of <see cref="CharacterModel">character</see> information to the
+        /// console.
+        /// </summary>
+        /// <param name="characters">
+        /// The <see cref="IEnumerable{CharacterModel}">collection</see> of <see
+        /// cref="CharacterModel">characters</see> to write.
+        /// </param>
         private static void WriteCharacterTable(IEnumerable<CharacterModel> characters)
         {
             // Find longest Id and Name from characters
