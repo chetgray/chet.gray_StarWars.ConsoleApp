@@ -90,7 +90,23 @@ namespace StarWars.ConsoleApp.Business
         /// <inheritdoc/>
         public async Task<IEnumerable<CharacterModel>> GetAllByTrilogyAsync(Trilogy trilogy)
         {
-            throw new NotImplementedException();
+            Uri uri = new Uri(BaseUri, $"Characters/AllByTrilogy/{trilogy}");
+            string json;
+            using (HttpResponseMessage response = await _apiClient.GetAsync(uri))
+            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException(
+                        "Response status code does not indicate success: "
+                            + $"{(int)response.StatusCode} ({response.ReasonPhrase})."
+                    );
+                }
+                json = await response.Content.ReadAsStringAsync();
+            }
+            IEnumerable<CharacterModel> characters = JsonConvert.DeserializeObject<
+                IEnumerable<CharacterModel>
+            >(json, SerializerSettings);
+            return characters;
         }
 
         /// <inheritdoc/>

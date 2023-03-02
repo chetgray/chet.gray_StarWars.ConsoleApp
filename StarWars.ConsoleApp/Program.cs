@@ -73,6 +73,7 @@ namespace StarWars.ConsoleApp
 
                     case "4":
                         // Get a list of character information by trilogy
+                        LookupCharactersByTrilogy(_characterBL);
                         break;
 
                     case "0":
@@ -246,6 +247,60 @@ namespace StarWars.ConsoleApp
             if (characters.Count == 0)
             {
                 WriteLine($"No characters found with allegiance \"{allegiance}\"");
+                return;
+            }
+            WriteCharacterTable(characters);
+        }
+
+        /// <summary>
+        /// Prompts the user for a <see cref="Trilogy">trilogy</see>, then queries the API for
+        /// <see cref="CharacterModel">character</see>s introduced in that <see
+        /// cref="CharacterModel.TrilogyIntroducedIn">trilogy</see> and writes the information
+        /// to the console.
+        /// </summary>
+        /// <param name="characterBL">
+        /// The <see cref="ICharacterBL">business logic</see> to use.
+        /// </param>
+        private static void LookupCharactersByTrilogy(ICharacterBL characterBL)
+        {
+            string trilogyInput = null;
+            Trilogy? trilogy = null;
+            while (trilogy is null)
+            {
+                while (string.IsNullOrEmpty(trilogyInput))
+                {
+                    Write("Enter a trilogy to look up:\n» ");
+                    trilogyInput = ReadLine();
+                }
+                try
+                {
+                    trilogy = (Trilogy)
+                        Enum.Parse(typeof(Trilogy), trilogyInput, ignoreCase: true);
+                }
+                catch (ArgumentException)
+                {
+                    WriteLine($"Invalid trilogy \"{trilogyInput}\"");
+                    WriteLine(
+                        "Valid trilogies: " + string.Join(", ", Enum.GetNames(typeof(Trilogy)))
+                    );
+                    trilogyInput = null;
+                }
+            }
+            WriteLine();
+
+            List<CharacterModel> characters;
+            try
+            {
+                characters = characterBL.GetAllByTrilogyAsync((Trilogy)trilogy).Result.ToList();
+            }
+            catch (AggregateException ex)
+            {
+                ex.Flatten().Handle(HandleApiExceptions);
+                return;
+            }
+            if (characters.Count == 0)
+            {
+                WriteLine($"No characters found introduced in trilogy \"{trilogy}\"");
                 return;
             }
             WriteCharacterTable(characters);

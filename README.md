@@ -13,7 +13,7 @@ User Story 211922: Calling APIs: Call Star Wars API
 >   - [x] Get a list of all the character information
 >   - [x] Get a character's information by their name
 >   - [x] Get a list of character information by allegiance
->   - [ ] Get a list of character information by trilogy
+>   - [x] Get a list of character information by trilogy
 > - [x] Once the user select an option from the menu, prompt them for
 >   any additional information needed.
 > - [x] Then call your Star Wars WebAPI and display the appropriate
