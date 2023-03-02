@@ -68,6 +68,7 @@ namespace StarWars.ConsoleApp
 
                     case "3":
                         // Get a list of character information by allegiance
+                        LookupCharactersByAllegiance(_characterBL);
                         break;
 
                     case "4":
@@ -191,6 +192,63 @@ namespace StarWars.ConsoleApp
                 return;
             }
             WriteCharacterTable(new List<CharacterModel> { character });
+        }
+
+        /// <summary>
+        /// Prompts the user for an <see cref="Allegiance">allegiance</see>, then queries the
+        /// API for <see cref="CharacterModel">character</see>s with that <see
+        /// cref"CharacterModel.Allegiance">allegiance</see> and writes the information to the
+        /// console.
+        /// </summary>
+        /// <param name="characterBL">
+        /// The <see cref="ICharacterBL">business logic</see> to use.
+        /// </param>
+        private static void LookupCharactersByAllegiance(ICharacterBL characterBL)
+        {
+            string allegianceInput = null;
+            Allegiance? allegiance = null;
+            while (allegiance is null)
+            {
+                while (string.IsNullOrEmpty(allegianceInput))
+                {
+                    Write("Enter an allegiance to look up:\n» ");
+                    allegianceInput = ReadLine();
+                }
+                try
+                {
+                    allegiance = (Allegiance)
+                        Enum.Parse(typeof(Allegiance), allegianceInput, ignoreCase: true);
+                }
+                catch (ArgumentException)
+                {
+                    WriteLine($"Invalid allegiance \"{allegianceInput}\"");
+                    WriteLine(
+                        "Valid allegiances: "
+                            + string.Join(", ", Enum.GetNames(typeof(Allegiance)))
+                    );
+                    allegianceInput = null;
+                }
+            }
+            WriteLine();
+
+            List<CharacterModel> characters;
+            try
+            {
+                characters = characterBL
+                    .GetAllByAllegianceAsync((Allegiance)allegiance)
+                    .Result.ToList();
+            }
+            catch (AggregateException ex)
+            {
+                ex.Flatten().Handle(HandleApiExceptions);
+                return;
+            }
+            if (characters.Count == 0)
+            {
+                WriteLine($"No characters found with allegiance \"{allegiance}\"");
+                return;
+            }
+            WriteCharacterTable(characters);
         }
 
         /// <summary>
