@@ -155,14 +155,18 @@ namespace StarWars.ConsoleApp
 
         private static void LookupCharacterByName(ICharacterBL characterBL)
         {
-            Write("Enter a character name to look up:\n» ");
-            string name = ReadLine();
+            string nameInput = null;
+            while (string.IsNullOrEmpty(nameInput))
+            {
+                Write("Enter a character name to look up:\n» ");
+                nameInput = ReadLine();
+            }
             WriteLine();
 
             CharacterModel character;
             try
             {
-                character = characterBL.GetOneByNameAsync(name).Result;
+                character = characterBL.GetOneByNameAsync(nameInput).Result;
             }
             catch (AggregateException ex)
             {
@@ -171,7 +175,7 @@ namespace StarWars.ConsoleApp
             }
             if (character is null)
             {
-                WriteLine($"No character found with name \"{name}\"");
+                WriteLine($"No character found with name \"{nameInput}\"");
                 return;
             }
             WriteCharacterTable(new List<CharacterModel> { character });
