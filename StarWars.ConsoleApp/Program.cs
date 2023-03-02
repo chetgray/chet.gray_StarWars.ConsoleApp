@@ -168,6 +168,11 @@ namespace StarWars.ConsoleApp
                 ex.Flatten().Handle(HandleApiExceptions);
                 return;
             }
+            if (character is null)
+            {
+                WriteLine($"No character found with name \"{name}\"");
+                return;
+            }
             WriteCharacterTable(new List<CharacterModel> { character });
         }
 
