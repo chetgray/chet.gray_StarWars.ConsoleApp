@@ -75,7 +75,7 @@ namespace StarWars.ConsoleApp
 
                     case "4":
                         // Get a list of character information by trilogy
-                        LookupCharactersByTrilogy(_characterBL);
+                        LookupCharactersByTrilogy();
                         break;
 
                     case "0":
@@ -251,10 +251,7 @@ namespace StarWars.ConsoleApp
         /// cref="CharacterModel.TrilogyIntroducedIn">trilogy</see> and writes the information
         /// to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharactersByTrilogy(ICharacterBL characterBL)
+        private static void LookupCharactersByTrilogy()
         {
             string trilogyInput = null;
             Trilogy? trilogy = null;
@@ -284,7 +281,9 @@ namespace StarWars.ConsoleApp
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL.GetAllByTrilogyAsync((Trilogy)trilogy).Result.ToList();
+                characters =
+                    (List<CharacterModel>)
+                        _api.ListCharactersByTrilogyAsync((Trilogy)trilogy).Result;
             }
             catch (AggregateException ex)
             {
