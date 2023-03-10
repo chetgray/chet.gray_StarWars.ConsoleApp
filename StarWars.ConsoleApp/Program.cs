@@ -65,7 +65,7 @@ namespace StarWars.ConsoleApp
 
                     case "2":
                         // Get a character's information by their name
-                        LookupCharacterByName(_characterBL);
+                        LookupCharacterByName();
                         break;
 
                     case "3":
@@ -163,10 +163,7 @@ namespace StarWars.ConsoleApp
         /// cref="CharacterModel">character</see> with that <see
         /// cref"CharacterModel.Name">name</see> and writes the information to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharacterByName(ICharacterBL characterBL)
+        private static void LookupCharacterByName()
         {
             string nameInput = null;
             while (string.IsNullOrEmpty(nameInput))
@@ -179,7 +176,7 @@ namespace StarWars.ConsoleApp
             CharacterModel character;
             try
             {
-                character = characterBL.GetOneByNameAsync(nameInput).Result;
+                character = _api.GetCharacterByNameAsync(nameInput).Result;
             }
             catch (AggregateException ex)
             {
