@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using StarWars.ConsoleApp.Business;
 using StarWars.WebApi.Proxy;
 using StarWars.WebApi.Proxy.Models;
 
@@ -15,9 +14,6 @@ namespace StarWars.ConsoleApp
     internal static class Program
     {
         private static readonly StarWarsProxy _api = new StarWarsProxy();
-        private static readonly ICharacterBL _characterBL = new CharacterBL(
-            ApiHelper.ApiClient
-        );
 
         /// <summary>
         /// The entry point of the application.
