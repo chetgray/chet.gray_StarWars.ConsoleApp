@@ -70,7 +70,7 @@ namespace StarWars.ConsoleApp
 
                     case "3":
                         // Get a list of character information by allegiance
-                        LookupCharactersByAllegiance(_characterBL);
+                        LookupCharactersByAllegiance();
                         break;
 
                     case "4":
@@ -197,10 +197,7 @@ namespace StarWars.ConsoleApp
         /// cref"CharacterModel.Allegiance">allegiance</see> and writes the information to the
         /// console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharactersByAllegiance(ICharacterBL characterBL)
+        private static void LookupCharactersByAllegiance()
         {
             string allegianceInput = null;
             Allegiance? allegiance = null;
@@ -231,9 +228,9 @@ namespace StarWars.ConsoleApp
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL
-                    .GetAllByAllegianceAsync((Allegiance)allegiance)
-                    .Result.ToList();
+                characters =
+                    (List<CharacterModel>)
+                        _api.ListCharactersByAllegianceAsync((Allegiance)allegiance).Result;
             }
             catch (AggregateException ex)
             {

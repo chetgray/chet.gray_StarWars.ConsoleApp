@@ -16,7 +16,7 @@ API
 >   the Proxy methods to:
 >   - [x] Get a list of all the character information
 >   - [x] Get a character's information by their name
->   - [ ] Get a list of character information by allegiance
+>   - [x] Get a list of character information by allegiance
 >   - [ ] Get a list of character information by trilogy
 > - [x] The console app should have a main menu where you can choose which
 >   of the above you want to do.
