@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using StarWars.ConsoleApp.Business;
-using StarWars.ConsoleApp.Models;
+using StarWars.WebApi.Proxy;
+using StarWars.WebApi.Proxy.Models;
 
 using static System.Console;
 using static System.Math;
@@ -13,9 +13,7 @@ namespace StarWars.ConsoleApp
 {
     internal static class Program
     {
-        private static readonly ICharacterBL _characterBL = new CharacterBL(
-            ApiHelper.ApiClient
-        );
+        private static readonly StarWarsProxy _api = new StarWarsProxy();
 
         /// <summary>
         /// The entry point of the application.
@@ -58,22 +56,22 @@ namespace StarWars.ConsoleApp
                 {
                     case "1":
                         // Get a list of all character information
-                        LookupAllCharacters(_characterBL);
+                        LookupAllCharacters();
                         break;
 
                     case "2":
                         // Get a character's information by their name
-                        LookupCharacterByName(_characterBL);
+                        LookupCharacterByName();
                         break;
 
                     case "3":
                         // Get a list of character information by allegiance
-                        LookupCharactersByAllegiance(_characterBL);
+                        LookupCharactersByAllegiance();
                         break;
 
                     case "4":
                         // Get a list of character information by trilogy
-                        LookupCharactersByTrilogy(_characterBL);
+                        LookupCharactersByTrilogy();
                         break;
 
                     case "0":
@@ -141,15 +139,12 @@ namespace StarWars.ConsoleApp
         /// Queries the API for all <see cref="CharacterModel">character</see>s and writes the
         /// information to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupAllCharacters(ICharacterBL characterBL)
+        private static void LookupAllCharacters()
         {
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL.GetAllAsync().Result.ToList();
+                characters = (List<CharacterModel>)_api.ListCharactersAsync().Result;
             }
             catch (AggregateException ex)
             {
@@ -164,10 +159,7 @@ namespace StarWars.ConsoleApp
         /// cref="CharacterModel">character</see> with that <see
         /// cref"CharacterModel.Name">name</see> and writes the information to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharacterByName(ICharacterBL characterBL)
+        private static void LookupCharacterByName()
         {
             string nameInput = null;
             while (string.IsNullOrEmpty(nameInput))
@@ -180,7 +172,7 @@ namespace StarWars.ConsoleApp
             CharacterModel character;
             try
             {
-                character = characterBL.GetOneByNameAsync(nameInput).Result;
+                character = _api.GetCharacterByNameAsync(nameInput).Result;
             }
             catch (AggregateException ex)
             {
@@ -201,10 +193,7 @@ namespace StarWars.ConsoleApp
         /// cref"CharacterModel.Allegiance">allegiance</see> and writes the information to the
         /// console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharactersByAllegiance(ICharacterBL characterBL)
+        private static void LookupCharactersByAllegiance()
         {
             string allegianceInput = null;
             Allegiance? allegiance = null;
@@ -235,9 +224,9 @@ namespace StarWars.ConsoleApp
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL
-                    .GetAllByAllegianceAsync((Allegiance)allegiance)
-                    .Result.ToList();
+                characters =
+                    (List<CharacterModel>)
+                        _api.ListCharactersByAllegianceAsync((Allegiance)allegiance).Result;
             }
             catch (AggregateException ex)
             {
@@ -258,10 +247,7 @@ namespace StarWars.ConsoleApp
         /// cref="CharacterModel.TrilogyIntroducedIn">trilogy</see> and writes the information
         /// to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupCharactersByTrilogy(ICharacterBL characterBL)
+        private static void LookupCharactersByTrilogy()
         {
             string trilogyInput = null;
             Trilogy? trilogy = null;
@@ -291,7 +277,9 @@ namespace StarWars.ConsoleApp
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL.GetAllByTrilogyAsync((Trilogy)trilogy).Result.ToList();
+                characters =
+                    (List<CharacterModel>)
+                        _api.ListCharactersByTrilogyAsync((Trilogy)trilogy).Result;
             }
             catch (AggregateException ex)
             {
