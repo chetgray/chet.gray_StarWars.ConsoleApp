@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 
 using StarWars.ConsoleApp.Business;
-using StarWars.ConsoleApp.Models;
+using StarWars.WebApi.Proxy.Models;
 
 using static System.Console;
 using static System.Math;

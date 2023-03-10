@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using StarWars.ConsoleApp.Models;
+using StarWars.WebApi.Proxy.Models;
 
 namespace StarWars.ConsoleApp.Business
 {

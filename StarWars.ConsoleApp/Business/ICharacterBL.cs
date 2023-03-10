@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using StarWars.ConsoleApp.Models;
+using StarWars.WebApi.Proxy.Models;
 
 namespace StarWars.ConsoleApp.Business
 {
