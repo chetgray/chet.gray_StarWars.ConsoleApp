@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 
 using StarWars.ConsoleApp.Business;
+using StarWars.WebApi.Proxy;
 using StarWars.WebApi.Proxy.Models;
 
 using static System.Console;
@@ -13,6 +14,7 @@ namespace StarWars.ConsoleApp
 {
     internal static class Program
     {
+        private static readonly StarWarsProxy _api = new StarWarsProxy();
         private static readonly ICharacterBL _characterBL = new CharacterBL(
             ApiHelper.ApiClient
         );
@@ -58,7 +60,7 @@ namespace StarWars.ConsoleApp
                 {
                     case "1":
                         // Get a list of all character information
-                        LookupAllCharacters(_characterBL);
+                        LookupAllCharacters();
                         break;
 
                     case "2":
@@ -141,15 +143,12 @@ namespace StarWars.ConsoleApp
         /// Queries the API for all <see cref="CharacterModel">character</see>s and writes the
         /// information to the console.
         /// </summary>
-        /// <param name="characterBL">
-        /// The <see cref="ICharacterBL">business logic</see> to use.
-        /// </param>
-        private static void LookupAllCharacters(ICharacterBL characterBL)
+        private static void LookupAllCharacters()
         {
             List<CharacterModel> characters;
             try
             {
-                characters = characterBL.GetAllAsync().Result.ToList();
+                characters = (List<CharacterModel>)_api.ListCharactersAsync().Result;
             }
             catch (AggregateException ex)
             {

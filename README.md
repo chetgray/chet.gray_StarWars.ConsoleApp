@@ -14,7 +14,7 @@ API
 >   to Local Nuget.
 > - Create a simple console app that pulls in the Nuget package and uses
 >   the Proxy methods to:
->   - [ ] Get a list of all the character information
+>   - [x] Get a list of all the character information
 >   - [ ] Get a character's information by their name
 >   - [ ] Get a list of character information by allegiance
 >   - [ ] Get a list of character information by trilogy
